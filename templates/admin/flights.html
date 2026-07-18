@@ -1,0 +1,145 @@
+{% extends "base_new.html" %}
+
+{% block title %}Manage Flights{% endblock %}
+
+{% block content %}
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('admin_new.flights') }}" class="row g-3">
+            <div class="col-md-4">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ search }}"
+                    placeholder="Flight # or Airline">
+            </div>
+            <div class="col-md-3">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="">All</option>
+                    <option value="Scheduled" {% if status_filter=='Scheduled' %}selected{% endif %}>Scheduled</option>
+                    <option value="Delayed" {% if status_filter=='Delayed' %}selected{% endif %}>Delayed</option>
+                    <option value="Cancelled" {% if status_filter=='Cancelled' %}selected{% endif %}>Cancelled</option>
+                    <option value="Completed" {% if status_filter=='Completed' %}selected{% endif %}>Completed</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="sort_by" class="form-label">Sort By</label>
+                <select class="form-select" id="sort_by" name="sort_by">
+                    <option value="departure_datetime" {% if sort_by=='departure_datetime' %}selected{% endif %}>
+                        Departure</option>
+                    <option value="flight_number" {% if sort_by=='flight_number' %}selected{% endif %}>Flight #</option>
+                    <option value="economy_price" {% if sort_by=='economy_price' %}selected{% endif %}>Price</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="sort_order" class="form-label">Order</label>
+                <select class="form-select" id="sort_order" name="sort_order">
+                    <option value="ASC" {% if sort_order=='ASC' %}selected{% endif %}>Ascending</option>
+                    <option value="DESC" {% if sort_order=='DESC' %}selected{% endif %}>Descending</option>
+                </select>
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Flights Table -->
+<div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Flights ({{ total }})</h5>
+    </div>
+    <div class="card-body">
+        {% if flights %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Flight #</th>
+                        <th>Airline</th>
+                        <th>Route</th>
+                        <th>Departure</th>
+                        <th>Arrival</th>
+                        <th>Price</th>
+                        <th>Seats</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for flight in flights %}
+                    <tr>
+                        <td><strong>{{ flight.flight_number }}</strong></td>
+                        <td>{{ flight.airline_name }}</td>
+                        <td>{{ flight.origin_code }} → {{ flight.destination_code }}</td>
+                        <td>{{ flight.departure_datetime.strftime('%d %b %Y, %I:%M %p') }}</td>
+                        <td>{{ flight.arrival_datetime.strftime('%d %b %Y, %I:%M %p') }}</td>
+                        <td>
+                            ₹{{ "%.2f"|format(flight.economy_price) }}<br>
+                            <small class="text-muted">Business: ₹{{ "%.2f"|format(flight.business_price) }}</small>
+                        </td>
+                        <td>
+                            <small>E: {{ flight.seats_economy }}</small><br>
+                            <small>B: {{ flight.seats_business }}</small>
+                        </td>
+                        <td>
+                            <span
+                                class="badge bg-{{ 'success' if flight.status == 'Scheduled' else 'warning' if flight.status == 'Delayed' else 'danger' if flight.status == 'Cancelled' else 'info' }}">
+                                {{ flight.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <form method="post"
+                                action="{{ url_for('admin_new.toggle_flight_status', flight_id=flight.id) }}"
+                                onsubmit="return confirm('Toggle flight status?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+                                <button class="btn btn-sm btn-{{ 'warning' if flight.is_active else 'success' }}"
+                                    type="submit">
+                                    <i class="fa-solid fa-{{ 'ban' if flight.is_active else 'check' }}"></i>
+                                    {{ 'Deactivate' if flight.is_active else 'Activate' }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.flights', page=page-1, search=search, status=status_filter, sort_by=sort_by, sort_order=sort_order) }}">Previous</a>
+                </li>
+                {% endif %}
+
+                {% for p in range(start_page, end_page) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.flights', page=p, search=search, status=status_filter, sort_by=sort_by, sort_order=sort_order) }}">{{
+                        p }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page < total_pages %} <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.flights', page=page+1, search=search, status=status_filter, sort_by=sort_by, sort_order=sort_order) }}">Next</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fa-solid fa-info-circle me-2"></i>No flights found.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

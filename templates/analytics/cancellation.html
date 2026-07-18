@@ -1,0 +1,270 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">
+        Cancellation Analysis
+    </h2>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <div class="row">
+
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    Cancellation Percentage
+                </div>
+
+
+                <div class="card-body">
+
+                    <canvas id="cancelPie"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-header">
+                    Monthly Cancellation Trend
+                </div>
+
+
+                <div class="card-body">
+
+                    <canvas id="cancelTrend"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+
+
+    Chart.defaults.color = "#14213d";
+
+
+    // ================================
+    // Cancellation Percentage Pie Chart
+    // ================================
+
+
+    new Chart(
+        document.getElementById("cancelPie"),
+        {
+
+            type: "pie",
+
+            data: {
+
+                labels: [
+                    "Cancelled",
+                    "Other Bookings"
+                ],
+
+
+                datasets: [
+
+                    {
+
+                        data: [
+
+                            {{ metrics.cancelled_bookings }},
+
+                    {{ metrics.total_bookings - metrics.cancelled_bookings }}
+
+                    ]
+
+        }
+
+            ]
+
+        },
+
+
+        options: {
+
+        responsive: true,
+
+        maintainAspectRatio: false,
+
+
+        plugins: {
+
+            title: {
+
+                display: true,
+
+                text: "Cancellation Percentage",
+
+                font: {
+
+                    size: 18,
+
+                    weight: "bold"
+
+                },
+
+                padding: 20
+
+            }
+
+        }
+
+    }
+
+    }
+
+    );
+
+
+
+
+
+    // ================================
+    // Monthly Cancellation Trend Chart
+    // ================================
+
+
+    new Chart(
+
+        document.getElementById("cancelTrend"),
+
+        {
+
+
+            type: "bar",
+
+
+            data: {
+
+
+                labels: [
+
+                    {% for m in monthly %}
+
+                    "{{ m.month }}",
+
+                {% endfor %}
+
+            ],
+
+
+
+        datasets: [
+
+        {
+
+            label: "Cancelled Bookings",
+
+
+            data: [
+
+                {% for m in monthly %}
+
+                            {{ m.cancellations }},
+
+        {% endfor %}
+
+    ]
+
+                }
+
+            ]
+
+
+        },
+
+
+        options: {
+
+
+        responsive: true,
+
+
+        maintainAspectRatio: false,
+
+
+        scales: {
+
+
+            y: {
+
+                beginAtZero: true
+
+            }
+
+
+        },
+
+
+        plugins: {
+
+
+            title: {
+
+                display: true,
+
+                text: "Monthly Cancellation Trend",
+
+                font: {
+
+                    size: 18,
+
+                    weight: "bold"
+
+                },
+
+                padding: 20
+
+            },
+
+
+            legend: {
+
+                display: true
+
+            }
+
+
+        }
+
+
+    }
+
+
+    }
+
+
+    );
+
+
+</script>
+
+
+{% endblock %}

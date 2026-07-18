@@ -1,0 +1,141 @@
+{% extends "base_new.html" %}
+
+{% block title %}Manage Bookings{% endblock %}
+
+{% block content %}
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('admin_new.bookings') }}" class="row g-3">
+            <div class="col-md-3">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ search }}"
+                    placeholder="Reference, Flight # or User">
+            </div>
+            <div class="col-md-2">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="">All</option>
+                    <option value="Confirmed" {% if status_filter=='Confirmed' %}selected{% endif %}>Confirmed</option>
+                    <option value="Pending" {% if status_filter=='Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Completed" {% if status_filter=='Completed' %}selected{% endif %}>Completed</option>
+                    <option value="Cancelled" {% if status_filter=='Cancelled' %}selected{% endif %}>Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="date_from" class="form-label">From</label>
+                <input type="date" class="form-control" id="date_from" name="date_from" value="{{ date_from }}">
+            </div>
+            <div class="col-md-2">
+                <label for="date_to" class="form-label">To</label>
+                <input type="date" class="form-control" id="date_to" name="date_to" value="{{ date_to }}">
+            </div>
+            <div class="col-md-2">
+                <label for="sort_by" class="form-label">Sort By</label>
+                <select class="form-select" id="sort_by" name="sort_by">
+                    <option value="booked_at" {% if sort_by=='booked_at' %}selected{% endif %}>Date</option>
+                    <option value="total_amount" {% if sort_by=='total_amount' %}selected{% endif %}>Amount</option>
+                    <option value="flight_number" {% if sort_by=='flight_number' %}selected{% endif %}>Flight</option>
+                </select>
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bookings Table -->
+<div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Bookings ({{ total }})</h5>
+    </div>
+    <div class="card-body">
+        {% if bookings %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>User</th>
+                        <th>Flight</th>
+                        <th>Passengers</th>
+                        <th>Booked At</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td><strong>{{ booking.booking_reference }}</strong></td>
+                        <td>
+                            {{ booking.user_name }}<br>
+                            <small class="text-muted">{{ booking.user_email }}</small>
+                        </td>
+                        <td>{{ booking.flight_number }}</td>
+                        <td>{{ booking.passenger_count }}</td>
+                        <td>{{ booking.booked_at.strftime('%d %b %Y') }}</td>
+                        <td>
+                            <span
+                                class="badge bg-{{ 'success' if booking.booking_status == 'Confirmed' else 'warning' if booking.booking_status == 'Pending' else 'danger' if booking.booking_status == 'Cancelled' else 'info' }}">
+                                {{ booking.booking_status }}
+                            </span>
+                        </td>
+                        <td><strong>₹{{ "%.2f"|format(booking.total_amount) }}</strong></td>
+                        <td>
+                            <div class="btn-group btn-group-sm">
+                                <a href="{{ url_for('admin_new.admin_download_ticket', booking_id=booking.id) }}"
+                                    class="btn btn-outline-primary" title="Ticket">
+                                    <i class="fa-solid fa-ticket"></i>
+                                </a>
+                                <a href="{{ url_for('admin_new.admin_download_invoice', booking_id=booking.id) }}"
+                                    class="btn btn-outline-success" title="Invoice">
+                                    <i class="fa-solid fa-file-invoice"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.bookings', page=page-1, search=search, status=status_filter, date_from=date_from, date_to=date_to, sort_by=sort_by, sort_order=sort_order) }}">Previous</a>
+                </li>
+                {% endif %}
+
+                {% for p in range(start_page, end_page) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.bookings', page=p, search=search, status=status_filter, date_from=date_from, date_to=date_to, sort_by=sort_by, sort_order=sort_order) }}">{{
+                        p }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page < total_pages %} <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.bookings', page=page+1, search=search, status=status_filter, date_from=date_from, date_to=date_to, sort_by=sort_by, sort_order=sort_order) }}">Next</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fa-solid fa-info-circle me-2"></i>No bookings found.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

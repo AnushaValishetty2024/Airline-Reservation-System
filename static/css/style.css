@@ -1,0 +1,167 @@
+:root {
+    --primary: #0d6efd;
+    --secondary: #0f172a;
+    --accent: #3b82f6;
+    --light: #f8fbff;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #e0f2fe 0%, #f8fbff 100%);
+    color: #14213d;
+}
+
+.auth-page {
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, rgba(59, 130, 246, 0.2), transparent 40%), linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+}
+
+.card-header {
+    background: linear-gradient(90deg, #0f172a 0%, #2563eb 100%);
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, #2563eb 0%, #0d6efd 100%);
+    border: none;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid #bfdbfe;
+}
+
+.navbar-dark {
+    background: linear-gradient(90deg, #0f172a 0%, #1d4ed8 100%) !important;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.hover-shadow {
+    transition: all 0.3s ease;
+}
+
+.hover-shadow:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+/* ================================
+   ADMIN SIDEBAR
+================================ */
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: #0f172a;
+    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    overflow-y: auto;
+    box-shadow: 3px 0 12px rgba(0, 0, 0, .15);
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    background: #1e293b;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.sidebar-header .navbar-brand {
+    color: white !important;
+    text-decoration: none;
+    font-size: 1.25rem;
+}
+
+.sidebar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 15px 0;
+}
+
+.sidebar-nav .nav-item {
+    list-style: none;
+}
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 14px 22px;
+    color: #cbd5e1;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 4px 12px;
+    transition: .3s;
+    font-size: 15px;
+}
+
+.sidebar-nav .nav-link i {
+    width: 24px;
+    font-size: 16px;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: #2563eb;
+    color: white;
+}
+
+.sidebar-nav .nav-link.active {
+    background: #3b82f6;
+    color: white;
+    font-weight: 600;
+}
+
+.main-content {
+    margin-left: 260px;
+    min-height: 100vh;
+    padding: 25px;
+}
+
+.sidebar hr {
+    border-color: rgba(255, 255, 255, .15);
+    margin: 15px;
+}
+
+/* USER SIDEBAR */
+
+.user-sidebar {
+    background: #1e3a8a;
+}
+
+.admin-sidebar {
+    background: #0f172a;
+}
+
+/* Dashboard card headings visibility */
+
+.card-header {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+
+.card-body h3,
+.card-body h4,
+.card-body h5,
+.card-body h6 {
+    color: #111827 !important;
+}
+
+
+.card-body p {
+    color: #374151 !important;
+}
+
+
+/* Chart title visibility */
+.chart-container,
+canvas {
+    color: #111827;
+}

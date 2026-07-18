@@ -1,0 +1,378 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2>
+        Customer Analytics
+    </h2>
+
+
+    <div class="row">
+
+
+        <div class="col-md-3">
+            <div class="card shadow p-3">
+
+                <h5>Total Customers</h5>
+
+                <h2>
+                    {{data.total_customers}}
+                </h2>
+
+            </div>
+        </div>
+
+
+
+        <div class="col-md-3">
+            <div class="card shadow p-3">
+
+                <h5>Active Customers</h5>
+
+                <h2>
+                    {{data.active_customers}}
+                </h2>
+
+            </div>
+        </div>
+
+
+
+        <div class="col-md-3">
+            <div class="card shadow p-3">
+
+                <h5>Total Spending</h5>
+
+                <h2>
+                    ₹{{data.customer_spending}}
+                </h2>
+
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+    <div class="row mt-4">
+
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-body" style="height:350px;">
+
+                    <canvas id="customerSpendingChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+        <div class="col-md-6">
+
+
+            <div class="card shadow">
+
+                <div class="card-body" style="height:350px;">
+
+
+                    <canvas id="bookingFrequencyChart"></canvas>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+
+    Chart.defaults.color = "#14213d";
+
+
+
+    let customers =
+        {{ data.top_customers | tojson }};
+
+
+    let frequency =
+        {{ data.booking_frequency | tojson }};
+
+
+
+
+
+    // Top Customers Spending Chart
+
+
+    new Chart(
+        document.getElementById("customerSpendingChart"),
+
+        {
+
+
+            type: "bar",
+
+
+            data: {
+
+
+                labels:
+
+                    customers.map(
+                        x => x.name
+                    ),
+
+
+
+                datasets: [{
+
+                    label: "Spending",
+
+                    data:
+
+                        customers.map(
+                            x => x.spending
+                        )
+
+                }]
+
+
+            },
+
+
+            options: {
+
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+
+                layout: {
+
+                    padding: {
+
+                        top: 30
+
+                    }
+
+                },
+
+
+                plugins: {
+
+
+                    title: {
+
+
+                        display: true,
+
+
+                        text: "Top 10 Customers Spending",
+
+
+                        color: "#0f172a",
+
+
+                        font: {
+
+                            size: 18,
+
+                            weight: "bold"
+
+                        },
+
+
+                        padding: 20
+
+
+                    },
+
+
+                    legend: {
+
+                        display: true
+
+                    }
+
+
+                },
+
+
+                scales: {
+
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        });
+
+
+
+
+
+
+
+    // Booking Frequency Chart
+
+
+    new Chart(
+
+        document.getElementById("bookingFrequencyChart"),
+
+
+        {
+
+
+            type: "bar",
+
+
+            data: {
+
+
+                labels:
+
+                    frequency.map(
+                        x => x.name
+                    ),
+
+
+
+                datasets: [{
+
+
+                    label: "Bookings",
+
+
+                    data:
+
+                        frequency.map(
+                            x => x.bookings
+                        )
+
+
+                }]
+
+
+            },
+
+
+            options: {
+
+
+                responsive: true,
+
+
+                maintainAspectRatio: false,
+
+
+                layout: {
+
+                    padding: {
+
+                        top: 30
+
+                    }
+
+                },
+
+
+                plugins: {
+
+
+                    title: {
+
+
+                        display: true,
+
+
+                        text: "Booking Frequency",
+
+
+                        color: "#0f172a",
+
+
+                        font: {
+
+                            size: 18,
+
+                            weight: "bold"
+
+                        },
+
+
+                        padding: 20
+
+
+                    },
+
+
+                    legend: {
+
+                        display: true
+
+                    }
+
+
+                },
+
+
+                scales: {
+
+
+                    y: {
+
+                        beginAtZero: true
+
+                    }
+
+
+                }
+
+
+            }
+
+
+        });
+
+
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">
+        Occupancy Analysis
+    </h2>
+
+
+    <!-- Occupancy Data Test -->
+    <div class="card mb-4">
+
+        <div class="card-header">
+            Flight Occupancy Details
+        </div>
+
+        <div class="card-body">
+
+            {% for flight in occupancy_data %}
+
+            <p>
+                {{ flight.flight }}
+                -
+                {{ flight.occupancy }} %
+            </p>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Charts Row -->
+
+    <div class="row">
+
+
+        <!-- Occupancy Comparison -->
+
+        <div class="col-md-6">
+
+            <div class="card">
+
+                <div class="card-header">
+                    Occupancy Comparison
+                </div>
+
+
+                <div class="card-body">
+
+                    <canvas id="occupancyChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- Flight Performance -->
+
+        <div class="col-md-6">
+
+            <div class="card">
+
+                <div class="card-header">
+                    Flight Performance
+                </div>
+
+
+                <div class="card-body">
+
+                    <canvas id="performanceChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- Send Flask Data to Javascript -->
+
+<script>
+
+    const occupancyData = {{ occupancy_data | tojson }};
+
+</script>
+<!-- Send Flask Data to Javascript -->
+
+<script>
+
+    const occupancyData = {{ occupancy_data | tojson }};
+
+</script>
+
+
+<!-- Chart.js -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<!-- Custom JS -->
+
+<script src="{{ url_for('static',
+filename='js/occupancy.js') }}"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="{{ url_for('static',
+filename='js/occupancy.js') }}">
+</script>
+
+{% endblock %}

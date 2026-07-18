@@ -1,0 +1,108 @@
+{% extends "base_new.html" %}
+
+{% block title %}Upcoming Trips{% endblock %}
+
+{% block content %}
+{% if trips %}
+<div class="row g-4">
+    {% for trip in trips %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card trip-card h-100">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-0">{{ trip.flight_number }}</h5>
+                    <p class="text-muted mb-0">{{ trip.airline_name }}</p>
+                </div>
+                <span class="badge bg-{{ 'success' if trip.booking_status == 'Confirmed' else 'warning' }}">
+                    {{ trip.booking_status }}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="text-center">
+                        <h4 class="mb-0">{{ trip.origin_code }}</h4>
+                        <small class="text-muted">{{ trip.origin_city }}</small>
+                    </div>
+                    <div class="text-center">
+                        <i class="fa-solid fa-arrow-right text-primary fa-lg"></i>
+                    </div>
+                    <div class="text-center">
+                        <h4 class="mb-0">{{ trip.destination_code }}</h4>
+                        <small class="text-muted">{{ trip.destination_city }}</small>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Departure</small>
+                        <p class="mb-0"><strong>{{ trip.departure_datetime.strftime('%d %b %Y') }}</strong></p>
+                        <p class="mb-0">{{ trip.departure_datetime.strftime('%I:%M %p') }}</p>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Arrival</small>
+                        <p class="mb-0"><strong>{{ trip.arrival_datetime.strftime('%d %b %Y') }}</strong></p>
+                        <p class="mb-0">{{ trip.arrival_datetime.strftime('%I:%M %p') }}</p>
+                    </div>
+                </div>
+
+                {% if trip.terminal or trip.gate_number %}
+                <div class="row g-2 mb-3">
+                    {% if trip.terminal %}
+                    <div class="col-6">
+                        <small class="text-muted">Terminal</small>
+                        <p class="mb-0"><strong>{{ trip.terminal }}</strong></p>
+                    </div>
+                    {% endif %}
+                    {% if trip.gate_number %}
+                    <div class="col-6">
+                        <small class="text-muted">Gate</small>
+                        <p class="mb-0"><strong>{{ trip.gate_number }}</strong></p>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <small class="text-muted">Seat</small>
+                        <p class="mb-0"><strong>{{ trip.seat_number or 'N/A' }}</strong></p>
+                    </div>
+                    <div class="col-6">
+                        <small class="text-muted">Passengers</small>
+                        <p class="mb-0"><strong>{{ trip.passenger_count }}</strong></p>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <a href="{{ url_for('user.download_ticket', booking_id=trip.id) }}" class="btn btn-primary">
+                        <i class="fa-solid fa-ticket me-2"></i>View Ticket
+                    </a>
+                    <a href="{{ url_for('user.download_ticket', booking_id=trip.id) }}" class="btn btn-outline-primary">
+                        <i class="fa-solid fa-download me-2"></i>Download Ticket
+                    </a>
+                    <div class="btn-group">
+                        <a href="{{ url_for('user.download_boarding_pass', booking_id=trip.id) }}"
+                            class="btn btn-outline-info flex-fill">
+                            <i class="fa-solid fa-id-card me-1"></i>Boarding Pass
+                        </a>
+                        <a href="{{ url_for('user.download_invoice', booking_id=trip.id) }}"
+                            class="btn btn-outline-success flex-fill">
+                            <i class="fa-solid fa-file-invoice me-1"></i>Invoice
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">
+    <i class="fa-solid fa-info-circle me-2"></i>
+    <strong>No upcoming trips.</strong> You don't have any upcoming flights.
+    <a href="{{ url_for('user.search') }}">Search for flights</a> to plan your next journey.
+</div>
+{% endif %}
+{% endblock %}

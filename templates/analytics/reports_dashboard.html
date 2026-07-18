@@ -1,0 +1,200 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">
+        SQL Reports Dashboard
+    </h2>
+
+
+    <!-- Revenue Report -->
+
+    <div class="card shadow mb-4">
+
+
+        <div class="card-header bg-primary text-white">
+
+            <h4 class="mb-0">
+                Revenue Report
+            </h4>
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <div class="table-responsive">
+
+
+                <table class="table table-bordered table-hover">
+
+
+                    <thead class="table-dark">
+
+
+                        <tr>
+
+                            <th>Airline</th>
+                            <th>Code</th>
+                            <th>Total Bookings</th>
+                            <th>Total Revenue</th>
+                            <th>Average Ticket Price</th>
+
+                        </tr>
+
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for row in revenue %}
+
+
+                        <tr>
+
+
+                            <td>{{ row.airline_name }}</td>
+
+                            <td>{{ row.airline_code }}</td>
+
+                            <td>{{ row.total_bookings }}</td>
+
+                            <td>
+                                ₹ {{ row.total_revenue }}
+                            </td>
+
+                            <td>
+                                ₹ {{ row.avg_ticket_price }}
+                            </td>
+
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- Booking Report -->
+
+
+    <div class="card shadow">
+
+
+        <div class="card-header bg-success text-white">
+
+
+            <h4 class="mb-0">
+                Booking Report
+            </h4>
+
+
+        </div>
+
+
+
+
+        <div class="card-body">
+
+
+            <div class="table-responsive">
+
+
+                <table class="table table-bordered table-hover">
+
+
+                    <thead class="table-dark">
+
+
+                        <tr>
+
+                            <th>Reference</th>
+                            <th>Booked At</th>
+                            <th>Status</th>
+                            <th>Flight</th>
+
+                        </tr>
+
+
+                    </thead>
+
+
+
+                    <tbody>
+
+
+                        {% for row in bookings %}
+
+
+                        <tr>
+
+
+                            <td>
+                                {{ row.booking_reference }}
+                            </td>
+
+
+                            <td>
+                                {{ row.booked_at }}
+                            </td>
+
+
+                            <td>
+                                {{ row.booking_status }}
+                            </td>
+
+
+                            <td>
+                                {{ row.flight_number }}
+                            </td>
+
+
+                        </tr>
+
+
+                        {% endfor %}
+
+
+                    </tbody>
+
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

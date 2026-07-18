@@ -1,0 +1,52 @@
+flight_id,flight_number,airline_name,origin_code,origin_city,destination_code,destination_city,route_name,total_seats,total_bookings,seats_sold,occupancy_rate,total_revenue
+1,AI101,Air India,DEL,Delhi,BOM,Mumbai,DEL -> BOM,119,8,155,130.25,101303040.0
+2,AI202,Air India,BOM,Mumbai,DEL,Delhi,BOM -> DEL,180,3,154,85.56,101346000.0
+3,AI303,Air India,DEL,Delhi,BLR,Bangalore,DEL -> BLR,413,56,184,44.55,110000.0
+4,AI404,Air India,BLR,Bangalore,DEL,Delhi,BLR -> DEL,270,0,0,0.0,0.0
+5,AI505,Air India,DEL,Delhi,HYD,Hyderabad,DEL -> HYD,162,0,0,0.0,0.0
+6,AI606,Air India,HYD,Hyderabad,DEL,Delhi,HYD -> DEL,162,0,0,0.0,0.0
+7,6E101,IndiGo,DEL,Delhi,BOM,Mumbai,DEL -> BOM,162,5,8,4.94,84000.0
+8,6E202,IndiGo,BOM,Mumbai,CCU,Kolkata,BOM -> CCU,195,0,0,0.0,0.0
+9,6E303,IndiGo,CCU,Kolkata,MAA,Chennai,CCU -> MAA,170,0,0,0.0,0.0
+10,6E404,IndiGo,MAA,Chennai,DEL,Delhi,MAA -> DEL,180,1,2,1.11,20800.0
+11,6E505,IndiGo,BLR,Bangalore,HYD,Hyderabad,BLR -> HYD,170,0,0,0.0,0.0
+12,6E606,IndiGo,HYD,Hyderabad,AMD,Ahmedabad,HYD -> AMD,195,0,0,0.0,0.0
+13,UK101,Vistara,DEL,Delhi,BOM,Mumbai,DEL -> BOM,270,0,0,0.0,0.0
+14,UK202,Vistara,BOM,Mumbai,COK,Kochi,BOM -> COK,292,0,0,0.0,0.0
+15,UK303,Vistara,COK,Kochi,DEL,Delhi,COK -> DEL,270,0,0,0.0,0.0
+16,UK404,Vistara,DEL,Delhi,MAA,Chennai,DEL -> MAA,292,0,0,0.0,0.0
+17,UK505,Vistara,BLR,Bangalore,DEL,Delhi,BLR -> DEL,270,0,0,0.0,0.0
+18,UK606,Vistara,HYD,Hyderabad,BOM,Mumbai,HYD -> BOM,292,0,0,0.0,0.0
+19,SG101,SpiceJet,DEL,Delhi,PNQ,Pune,DEL -> PNQ,163,4,7,4.29,45500.0
+20,SG202,SpiceJet,PNQ,Pune,DEL,Delhi,PNQ -> DEL,195,0,0,0.0,0.0
+21,SG303,SpiceJet,BOM,Mumbai,GOI,Goa,BOM -> GOI,170,0,0,0.0,0.0
+22,SG404,SpiceJet,GOI,Goa,BOM,Mumbai,GOI -> BOM,182,0,0,0.0,0.0
+23,SG505,SpiceJet,BLR,Bangalore,JAI,Jaipur,BLR -> JAI,170,0,0,0.0,0.0
+24,SG606,SpiceJet,JAI,Jaipur,BLR,Bangalore,JAI -> BLR,195,0,0,0.0,0.0
+25,G8101,GoAir,DEL,Delhi,BOM,Mumbai,DEL -> BOM,170,0,0,0.0,0.0
+26,G8202,GoAir,BOM,Mumbai,TRV,Thiruvananthapuram,BOM -> TRV,195,0,0,0.0,0.0
+27,G8303,GoAir,TRV,Thiruvananthapuram,DEL,Delhi,TRV -> DEL,169,1,1,0.59,4800.0
+28,G8404,GoAir,DEL,Delhi,VNS,Varanasi,DEL -> VNS,182,0,0,0.0,0.0
+29,G8505,GoAir,VNS,Varanasi,DEL,Delhi,VNS -> DEL,170,0,0,0.0,0.0
+30,I5101,AirAsia India,DEL,Delhi,IXB,Bagdogra,DEL -> IXB,169,1,1,0.59,3000.0
+31,I5202,AirAsia India,IXB,Bagdogra,ATQ,Amritsar,IXB -> ATQ,194,1,1,0.52,3200.0
+32,I5303,AirAsia India,ATQ,Amritsar,DEL,Delhi,ATQ -> DEL,170,0,0,0.0,0.0
+33,I5404,AirAsia India,BOM,Mumbai,BLR,Bangalore,BOM -> BLR,182,0,0,0.0,0.0
+34,I5505,AirAsia India,HYD,Hyderabad,CCU,Kolkata,HYD -> CCU,170,0,0,0.0,0.0
+35,AI707,Air India,CCU,Kolkata,AMD,Ahmedabad,CCU -> AMD,270,0,0,0.0,0.0
+36,AI808,Air India,AMD,Ahmedabad,CCU,Kolkata,AMD -> CCU,292,0,0,0.0,0.0
+37,6E707,IndiGo,MAA,Chennai,COK,Kochi,MAA -> COK,170,0,0,0.0,0.0
+38,6E808,IndiGo,COK,Kochi,MAA,Chennai,COK -> MAA,195,0,0,0.0,0.0
+39,UK707,Vistara,PNQ,Pune,BLR,Bangalore,PNQ -> BLR,270,0,0,0.0,0.0
+40,UK808,Vistara,BLR,Bangalore,PNQ,Pune,BLR -> PNQ,292,0,0,0.0,0.0
+41,SG707,SpiceJet,GOI,Goa,JAI,Jaipur,GOI -> JAI,170,0,0,0.0,0.0
+42,SG808,SpiceJet,JAI,Jaipur,GOI,Goa,JAI -> GOI,195,0,0,0.0,0.0
+43,G8707,GoAir,VNS,Varanasi,MAA,Chennai,VNS -> MAA,182,0,0,0.0,0.0
+44,G8808,GoAir,MAA,Chennai,VNS,Varanasi,MAA -> VNS,170,0,0,0.0,0.0
+45,I5707,AirAsia India,IXB,Bagdogra,HYD,Hyderabad,IXB -> HYD,195,0,0,0.0,0.0
+46,I5808,AirAsia India,HYD,Hyderabad,IXB,Bagdogra,HYD -> IXB,170,0,0,0.0,0.0
+144,AI901,Air India,CCU,Kolkata,TRV,Thiruvananthapuram,CCU -> TRV,270,0,0,0.0,0.0
+145,AI902,Air India,TRV,Thiruvananthapuram,CCU,Kolkata,TRV -> CCU,162,0,0,0.0,0.0
+146,6E901,IndiGo,VNS,Varanasi,DEL,Delhi,VNS -> DEL,170,0,0,0.0,0.0
+147,6E902,IndiGo,IXB,Bagdogra,BOM,Mumbai,IXB -> BOM,195,0,0,0.0,0.0
+148,UK901,Vistara,ATQ,Amritsar,BLR,Bangalore,ATQ -> BLR,292,0,0,0.0,0.0

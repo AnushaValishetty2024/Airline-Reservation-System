@@ -1,0 +1,229 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+
+    <h2>
+        Flight & Route Performance Analytics
+    </h2>
+
+
+
+    <!-- Best Routes -->
+
+    <div class="card shadow mt-4">
+
+        <div class="card-header">
+            <h5 class="mb-0">
+                Best Routes
+            </h5>
+        </div>
+
+
+        <div class="card-body">
+
+
+            <table class="table table-bordered table-hover">
+
+                <thead class="table-primary">
+
+                    <tr>
+                        <th>Route</th>
+                        <th>Total Bookings</th>
+                        <th>Revenue</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+
+                    {% for r in routes %}
+
+                    <tr>
+
+                        <td>{{r.route}}</td>
+
+                        <td>{{r.total_bookings}}</td>
+
+                        <td>₹ {{r.revenue}}</td>
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- Highest Revenue Flights -->
+
+
+    <div class="card shadow mt-4">
+
+
+        <div class="card-header">
+
+            <h5 class="mb-0">
+                Highest Revenue Flights
+            </h5>
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <table class="table table-bordered table-hover">
+
+
+                <thead class="table-success">
+
+
+                    <tr>
+
+                        <th>Flight</th>
+
+                        <th>Airline</th>
+
+                        <th>Revenue</th>
+
+                    </tr>
+
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for f in revenue_flights %}
+
+
+                    <tr>
+
+
+                        <td>{{f.flight_number}}</td>
+
+
+                        <td>{{f.airline}}</td>
+
+
+                        <td>₹ {{f.revenue}}</td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- Most Booked Flights -->
+
+
+    <div class="card shadow mt-4">
+
+
+        <div class="card-header">
+
+
+            <h5 class="mb-0">
+                Most Booked Flights
+            </h5>
+
+
+        </div>
+
+
+
+        <div class="card-body">
+
+
+            <table class="table table-bordered table-hover">
+
+
+                <thead class="table-warning">
+
+
+                    <tr>
+
+                        <th>Flight</th>
+
+                        <th>Total Bookings</th>
+
+                    </tr>
+
+
+                </thead>
+
+
+
+                <tbody>
+
+
+                    {% for f in booked_flights %}
+
+
+                    <tr>
+
+                        <td>{{f.flight_number}}</td>
+
+                        <td>{{f.total_bookings}}</td>
+
+
+                    </tr>
+
+
+                    {% endfor %}
+
+
+                </tbody>
+
+
+            </table>
+
+
+        </div>
+
+
+    </div>
+
+
+
+</div>
+
+
+{% endblock %}

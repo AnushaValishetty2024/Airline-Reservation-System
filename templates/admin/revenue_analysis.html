@@ -1,0 +1,323 @@
+{% extends "base_new.html" %}
+
+
+{% block title %}
+Revenue Analytics
+{% endblock %}
+
+
+
+{% block content %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<div class="container-fluid">
+
+    <h2 class="mb-4">
+        Revenue Analytics
+    </h2>
+
+
+    <!-- Total Revenue -->
+
+    <div class="row mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card shadow-sm p-3">
+
+                <h5>Total Revenue</h5>
+
+                <h2>
+                    ₹ {{ data.total_revenue }}
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Charts Section -->
+
+    <div class="row g-4">
+
+
+        <!-- Chart 1 Revenue By Airline -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    Revenue By Airline
+                </div>
+
+                <div class="card-body" style="height:300px;">
+
+                    <canvas id="airlineRevenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- Chart 2 Monthly Revenue -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    Monthly Revenue Trend
+                </div>
+
+                <div class="card-body" style="height:300px;">
+
+                    <canvas id="monthlyRevenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- Chart 3 Revenue By Route -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    Revenue By Route
+                </div>
+
+                <div class="card-body" style="height:300px;">
+
+                    <canvas id="routeRevenueChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+        <!-- Chart 4 Revenue Distribution -->
+
+        <div class="col-md-6">
+
+            <div class="card shadow-sm">
+
+                <div class="card-header">
+                    Revenue Distribution
+                </div>
+
+                <div class="card-body" style="height:300px;">
+
+                    <canvas id="revenueDistributionChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+    <script>
+
+        console.log("Chart script started");
+
+        const airlineLabels = {{ data.airline_revenue | map(attribute = 'airline_name') | list | tojson }};
+
+        const airlineValues = {{ data.airline_revenue | map(attribute = 'revenue') | list | tojson }};
+
+
+        console.log("Airline Labels:", airlineLabels);
+        console.log("Airline Values:", airlineValues);
+
+
+
+        const airlineCanvas = document.getElementById("airlineRevenueChart");
+
+        console.log("Airline Canvas:", airlineCanvas);
+
+
+
+        new Chart(airlineCanvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: airlineLabels,
+
+                datasets: [{
+
+                    label: "Revenue",
+
+                    data: airlineValues
+
+                }]
+
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+
+
+
+
+        const monthLabels = {{ data.monthly_revenue | map(attribute = 'month') | list | tojson }};
+
+        const monthValues = {{ data.monthly_revenue | map(attribute = 'revenue') | list | tojson }};
+
+
+        console.log("Month Labels:", monthLabels);
+        console.log("Month Values:", monthValues);
+
+
+        const monthlyCanvas = document.getElementById("monthlyRevenueChart");
+
+
+        new Chart(monthlyCanvas, {
+
+            type: "line",
+
+            data: {
+
+                labels: monthLabels,
+
+                datasets: [{
+
+                    label: "Monthly Revenue",
+
+                    data: monthValues
+
+                }]
+
+            },
+
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+
+        console.log("Charts created successfully");
+
+        // ==========================
+        // Revenue By Route Chart
+        // ==========================
+
+
+        const routeLabels = {{ data.route_revenue | map(attribute = 'route') | list | tojson }};
+
+        const routeValues = {{ data.route_revenue | map(attribute = 'revenue') | list | tojson }};
+
+
+
+        console.log("Route Labels:", routeLabels);
+        console.log("Route Values:", routeValues);
+
+
+
+        new Chart(
+
+            document.getElementById("routeRevenueChart"),
+
+            {
+
+                type: "bar",
+
+                data: {
+
+                    labels: routeLabels,
+
+                    datasets: [{
+
+                        label: "Route Revenue",
+
+                        data: routeValues
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false
+
+                }
+
+            }
+
+        );
+
+
+
+
+        // ==========================
+        // Revenue Distribution Chart
+        // ==========================
+
+
+        new Chart(
+
+            document.getElementById("revenueDistributionChart"),
+
+            {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels: airlineLabels,
+
+                    datasets: [{
+
+                        label: "Revenue",
+
+                        data: airlineValues
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false
+
+                }
+
+            }
+
+        );
+    </script>
+
+    {% endblock %}

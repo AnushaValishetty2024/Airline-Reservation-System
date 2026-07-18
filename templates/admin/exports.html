@@ -1,0 +1,41 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>Data Export Center</h2>
+
+    <hr>
+
+    <div class="list-group">
+
+        <a href="{{ url_for('export.revenue') }}" class="list-group-item list-group-item-action">
+
+            Download Revenue Report
+
+        </a>
+
+        <a href="{{ url_for('export.bookings') }}" class="list-group-item list-group-item-action">
+
+            Download Bookings Report
+
+        </a>
+
+        <a href="{{ url_for('export.customers') }}" class="list-group-item list-group-item-action">
+
+            Download Customers Report
+
+        </a>
+
+        <a href="{{ url_for('export.flights') }}" class="list-group-item list-group-item-action">
+
+            Download Flights Report
+
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

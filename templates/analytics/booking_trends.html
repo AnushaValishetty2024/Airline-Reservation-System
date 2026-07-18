@@ -1,0 +1,238 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2>Booking Trend Analysis</h2>
+
+
+    <!-- Daily Booking Trend -->
+
+    <div class="card mb-4 shadow">
+
+        <div class="card-header">
+            Daily Booking Trend
+        </div>
+
+        <div class="card-body" style="height:350px;">
+
+            <canvas id="bookingTrendChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+    <!-- Peak Booking Hours -->
+
+    <div class="card shadow">
+
+        <div class="card-header">
+            Booking Time Distribution
+        </div>
+
+        <div class="card-body" style="height:350px;">
+
+            <canvas id="bookingHourChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+<script>
+
+    Chart.defaults.color = "#14213d";
+
+
+    // Daily Booking Trend Chart
+
+    new Chart(document.getElementById("bookingTrendChart"), {
+
+        type: "line",
+
+        data: {
+
+            labels: [
+                "Mon",
+                "Tue",
+                "Wed",
+                "Thu",
+                "Fri"
+            ],
+
+            datasets: [{
+
+                label: "Bookings",
+
+                data: [
+                    10,
+                    25,
+                    15,
+                    30,
+                    20
+                ],
+
+                borderWidth: 2
+
+            }]
+
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+
+            layout: {
+
+                padding: {
+
+                    top: 30
+
+                }
+
+            },
+
+
+            plugins: {
+
+                title: {
+
+                    display: true,
+
+                    text: "Daily Booking Trend",
+
+                    color: "#0f172a",
+
+                    font: {
+
+                        size: 18,
+
+                        weight: "bold"
+
+                    },
+
+                    padding: 20
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+
+
+
+    // Booking Hours Chart
+
+
+    new Chart(document.getElementById("bookingHourChart"), {
+
+        type: "bar",
+
+        data: {
+
+            labels: [
+                "8 AM",
+                "10 AM",
+                "12 PM",
+                "2 PM",
+                "4 PM"
+            ],
+
+
+            datasets: [{
+
+                label: "Bookings By Hour",
+
+                data: [
+                    5,
+                    12,
+                    8,
+                    15,
+                    10
+                ],
+
+                borderWidth: 1
+
+            }]
+
+        },
+
+
+        options: {
+
+            responsive: true,
+
+            maintainAspectRatio: false,
+
+
+            layout: {
+
+                padding: {
+
+                    top: 30
+
+                }
+
+            },
+
+
+            plugins: {
+
+                title: {
+
+                    display: true,
+
+                    text: "Booking Time Distribution",
+
+                    color: "#0f172a",
+
+                    font: {
+
+                        size: 18,
+
+                        weight: "bold"
+
+                    },
+
+                    padding: 20
+
+                }
+
+            },
+
+
+            scales: {
+
+                y: {
+
+                    beginAtZero: true
+
+                }
+
+            }
+
+        }
+
+    });
+
+
+</script>
+
+
+{% endblock %}

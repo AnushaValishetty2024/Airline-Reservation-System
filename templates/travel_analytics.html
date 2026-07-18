@@ -1,0 +1,234 @@
+{% extends "base_new.html" %}
+
+{% block title %}Travel Analytics{% endblock %}
+
+{% block content %}
+<!-- No Data Alert -->
+{% if not analytics.last_trip and not analytics.next_trip %}
+<div class="alert alert-info mb-4">
+    <i class="fa-solid fa-info-circle me-2"></i>
+    No travel data available yet. Start your journey with <a href="{{ url_for('user.search') }}">Skyline Airlines</a>!
+</div>
+{% endif %}
+
+<!-- Stats Grid -->
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Total Flights</p>
+                        <h3 class="mb-0">{{ analytics.total_flights }}</h3>
+                    </div>
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary">
+                        <i class="fa-solid fa-plane"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Total Money Spent</p>
+                        <h3 class="mb-0">₹{{ "%.2f"|format(analytics.total_spent) }}</h3>
+                    </div>
+                    <div class="icon-box bg-success bg-opacity-10 text-success">
+                        <i class="fa-solid fa-rupee-sign"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Average Ticket Price</p>
+                        <h3 class="mb-0">₹{{ "%.2f"|format(analytics.avg_ticket_price) }}</h3>
+                    </div>
+                    <div class="icon-box bg-info bg-opacity-10 text-info">
+                        <i class="fa-solid fa-chart-simple"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Favourite Airline</p>
+                        <h5 class="mb-0">{{ analytics.favourite_airline }}</h5>
+                    </div>
+                    <div class="icon-box bg-warning bg-opacity-10 text-warning">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Favourite Destination</p>
+                        <h5 class="mb-0">{{ analytics.favourite_destination }}</h5>
+                    </div>
+                    <div class="icon-box bg-danger bg-opacity-10 text-danger">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Additional Analytics Charts -->
+{% if analytics.payment_method_distribution or analytics.airline_distribution %}
+<div class="row g-3 mb-4">
+    {% if analytics.payment_method_distribution %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Payment Methods</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="paymentMethodChart"></canvas>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if analytics.airline_distribution %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Favourite Airlines</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="airlineChart"></canvas>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endif %}
+
+<!-- Last & Next Trip -->
+<div class="row g-3 mb-4">
+    {% if analytics.last_trip %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fa-solid fa-history me-2"></i>Last Trip</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Flight</p>
+                        <h5>{{ analytics.last_trip.flight_number }}</h5>
+                        <p class="mb-0">{{ analytics.last_trip.origin }} &rarr; {{ analytics.last_trip.destination }}
+                        </p>
+                        <small class="text-muted">{{ analytics.last_trip.departure_datetime.strftime('%d %b %Y')
+                            }}</small>
+                    </div>
+                    <span class="badge bg-secondary">{{ analytics.last_trip.status }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if analytics.next_trip %}
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fa-solid fa-calendar-check me-2"></i>Next Trip</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Flight</p>
+                        <h5>{{ analytics.next_trip.flight_number }}</h5>
+                        <p class="mb-0">{{ analytics.next_trip.origin }} &rarr; {{ analytics.next_trip.destination }}
+                        </p>
+                        <small class="text-muted">{{ analytics.next_trip.departure_datetime.strftime('%d %b %Y')
+                            }}</small>
+                    </div>
+                    <span class="badge bg-success">{{ analytics.next_trip.status }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Charts -->
+{% if analytics.monthly_spending or analytics.confirmed_bookings or analytics.pending_bookings or
+analytics.cancelled_bookings or analytics.completed_bookings %}
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Monthly Spending</h5>
+            </div>
+            <div class="card-body">
+                {% if analytics.monthly_spending %}
+                <canvas id="spendingChart"></canvas>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i class="fa-solid fa-chart-line me-2"></i>No spending data available
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Booking Trends</h5>
+            </div>
+            <div class="card-body">
+                {% if analytics.confirmed_bookings or analytics.pending_bookings or analytics.cancelled_bookings or
+                analytics.completed_bookings %}
+                <canvas id="bookingTrendChart"></canvas>
+                {% else %}
+                <div class="alert alert-info mb-0">
+                    <i class="fa-solid fa-chart-bar me-2"></i>No booking data available
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+    window.monthlyLabels = {{ analytics.get("monthly_labels", []) | tojson }};
+    window.monthlySpending = {{ analytics.get("monthly_spending", []) | tojson }};
+    window.monthlyBookingLabels = {{ analytics.get("monthly_booking_labels", []) | tojson }};
+    window.monthlyBookingCount = {{ analytics.get("monthly_booking_count", []) | tojson }};
+    window.confirmedBookings = {{ analytics.get("confirmed_bookings", 0) }};
+    window.pendingBookings = {{ analytics.get("pending_bookings", 0) }};
+    window.cancelledBookings = {{ analytics.get("cancelled_bookings", 0) }};
+    window.completedBookings = {{ analytics.get("completed_bookings", 0) }};
+    window.paymentMethodDistribution = {{ analytics.get("payment_method_distribution", []) | tojson }};
+    window.airlineDistribution = {{ analytics.get("airline_distribution", []) | tojson }};
+</script>
+
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/travel_analytics.js') }}"></script>
+{% endblock %}

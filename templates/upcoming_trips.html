@@ -1,0 +1,15 @@
+{% extends "base_new.html" %}
+
+{% block title %}Upcoming Trips{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Upcoming Trips</h2>
+
+    {% if trips %}
+    <p>Total Trips: {{ trips|length }}</p>
+    {% else %}
+    <p>No upcoming trips found.</p>
+    {% endif %}
+</div>
+{% endblock %}

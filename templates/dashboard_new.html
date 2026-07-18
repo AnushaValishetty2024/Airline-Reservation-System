@@ -1,0 +1,161 @@
+{% extends "base_new.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- KPI Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Total Bookings</p>
+                        <h3 class="mb-0">{{ kpis.total_bookings }}</h3>
+                    </div>
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary">
+                        <i class="fa-solid fa-ticket"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Upcoming Trips</p>
+                        <h3 class="mb-0">{{ kpis.upcoming_trips }}</h3>
+                    </div>
+                    <div class="icon-box bg-success bg-opacity-10 text-success">
+                        <i class="fa-solid fa-calendar-check"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Completed Trips</p>
+                        <h3 class="mb-0">{{ kpis.completed_trips }}</h3>
+                    </div>
+                    <div class="icon-box bg-info bg-opacity-10 text-info">
+                        <i class="fa-solid fa-check-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Cancelled Trips</p>
+                        <h3 class="mb-0">{{ kpis.cancelled_trips }}</h3>
+                    </div>
+                    <div class="icon-box bg-danger bg-opacity-10 text-danger">
+                        <i class="fa-solid fa-times-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-6">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Total Amount Spent</p>
+                        <h3 class="mb-0">₹{{ "%.2f"|format(kpis.total_spent) }}</h3>
+                    </div>
+                    <div class="icon-box bg-warning bg-opacity-10 text-warning">
+                        <i class="fa-solid fa-rupee-sign"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card kpi-card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <p class="text-muted mb-1">Favourite Destination</p>
+                        <h3 class="mb-0">{{ kpis.favourite_destination }}</h3>
+                    </div>
+                    <div class="icon-box bg-success bg-opacity-10 text-success">
+                        <i class="fa-solid fa-location-dot"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Welcome Message -->
+<div class="alert alert-info">
+    <h4 class="alert-heading">Welcome back, {{ current_user.full_name }}!</h4>
+    <p>You have {{ kpis.upcoming_trips }} upcoming trip(s). Keep exploring with Skyline Airlines.</p>
+</div>
+
+<!-- Recent Bookings -->
+<div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Recent Bookings</h5>
+        <a href="{{ url_for('user.booking_history') }}" class="btn btn-primary btn-sm">View All</a>
+    </div>
+    <div class="card-body">
+        {% if recent_bookings %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Reference</th>
+                        <th>Flight</th>
+                        <th>Route</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td>{{ booking.booking_reference }}</td>
+                        <td>{{ booking.flight_number }}</td>
+                        <td>{{ booking.origin_code }} → {{ booking.destination_code }}</td>
+                        <td>{{ booking.departure_datetime.strftime('%d %b %Y') }}</td>
+                        <td>₹{{ "%.2f"|format(booking.total_amount) }}</td>
+                        <td>
+                            <span
+                                class="badge bg-{{ 'success' if booking.booking_status == 'Confirmed' else 'warning' if booking.booking_status == 'Pending' else 'secondary' }}">
+                                {{ booking.booking_status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ url_for('user.booking_history') }}"
+                                class="btn btn-sm btn-outline-primary">View</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fa-solid fa-info-circle me-2"></i>No bookings yet.
+            <a href="{{ url_for('user.search') }}">Search for flights</a> to get started.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

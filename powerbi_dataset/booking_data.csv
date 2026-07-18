@@ -1,0 +1,81 @@
+id,booking_reference,booked_at,booking_status,flight_number,airline_name,customer_name,customer_email,passenger_count,total_amount,paid_amount
+1,BK945947,2026-07-06 01:55:52,Confirmed,AI101,Air India,Anusha,anusha@gmail.com,150,675000.0,101250000.0
+2,BK321696,2026-07-06 02:19:19,Cancelled,AI202,Air India,Anusha,anusha@gmail.com,150,675000.0,101250000.0
+3,BK754592,2026-07-07 01:06:24,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+4,BK874091,2026-07-07 01:06:24,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+5,BK999997,2026-07-07 01:06:25,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+6,BK261858,2026-07-07 01:06:25,Cancelled,AI101,Air India,System Administrator,admin@airline.com,0,0.0,0.0
+7,BK782279,2026-07-07 01:09:49,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+8,BK652662,2026-07-07 01:09:49,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+9,BK588639,2026-07-07 01:09:49,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+10,BK530300,2026-07-07 01:09:49,Cancelled,AI101,Air India,System Administrator,admin@airline.com,0,0.0,0.0
+11,BK300910,2026-07-07 01:10:57,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+12,BK877371,2026-07-07 01:10:57,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+13,BK285548,2026-07-07 01:10:57,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+15,BK035684,2026-07-07 01:16:05,Confirmed,AI303,Air India,John Doe,john.doe@example.com,2,10400.0,20800.0
+16,BK546774,2026-07-07 01:22:14,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+17,BK446747,2026-07-07 01:22:14,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+18,BK491916,2026-07-07 01:22:14,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+19,BK405020,2026-07-07 01:25:50,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+20,BK620284,2026-07-07 01:25:50,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+21,BK743831,2026-07-07 01:25:50,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+22,BK035616,2026-07-07 01:30:29,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+23,BK921451,2026-07-07 01:30:29,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+24,BK799162,2026-07-07 01:30:29,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+25,BK442462,2026-07-07 01:32:30,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+26,BK727140,2026-07-07 01:32:30,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+27,BK677432,2026-07-07 01:32:30,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+28,BK168202,2026-07-07 01:33:39,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+29,BK244943,2026-07-07 01:33:39,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+30,BK172469,2026-07-07 01:33:39,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+31,BK732819,2026-07-07 01:34:22,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+32,BK684951,2026-07-07 01:34:22,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+33,BK122298,2026-07-07 01:34:22,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+34,BK450656,2026-07-07 01:35:51,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+35,BK476855,2026-07-07 01:35:51,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+36,BK221775,2026-07-07 01:35:51,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+37,BK936826,2026-07-07 01:36:47,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+38,BK066526,2026-07-07 01:36:48,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+39,BK045864,2026-07-07 01:36:48,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+40,BK506753,2026-07-07 01:59:14,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+41,BK333833,2026-07-07 01:59:14,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+42,BK023440,2026-07-07 01:59:15,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+43,BK411602,2026-07-07 02:00:09,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+44,BK145927,2026-07-07 02:00:09,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+45,BK825117,2026-07-07 02:00:09,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+46,BK965109,2026-07-07 23:24:22,Cancelled,6E101,IndiGo,Anusha,anusha@gmail.com,1,4200.0,4200.0
+47,BK901718,2026-07-08 00:45:32,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+48,BK748648,2026-07-08 00:45:32,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+49,BK366689,2026-07-08 00:45:33,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+50,BK020541,2026-07-08 20:30:21,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+51,BK343260,2026-07-08 20:30:22,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+52,BK301344,2026-07-08 20:30:22,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+56,BK615503,2026-07-08 20:40:02,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+57,BK517790,2026-07-08 20:40:02,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+58,BK227337,2026-07-08 20:40:02,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+59,BK719069,2026-07-08 23:19:24,Confirmed,AI101,Air India,Anusha,anusha@gmail.com,1,12000.0,12000.0
+60,BK948504,2026-07-08 23:23:29,Confirmed,I5101,AirAsia India,Anusha,anusha@gmail.com,1,3000.0,3000.0
+61,BK916907,2026-07-08 23:25:14,Confirmed,SG101,SpiceJet,Anusha,anusha@gmail.com,1,3500.0,3500.0
+62,BK081090,2026-07-09 00:36:39,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+63,BK729424,2026-07-09 00:36:39,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+64,BK159399,2026-07-09 00:36:39,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+65,BK014991,2026-07-09 00:39:15,Confirmed,AI303,Air India,John Doe,john.doe@example.com,2,10400.0,20800.0
+66,BK363926,2026-07-09 00:43:25,Cancelled,AI303,Air India,System Administrator,admin@airline.com,3,300.0,900.0
+67,BK923477,2026-07-09 00:43:25,Cancelled,AI303,Air India,System Administrator,admin@airline.com,2,200.0,400.0
+68,BK547189,2026-07-09 00:43:25,Cancelled,AI303,Air India,System Administrator,admin@airline.com,5,500.0,2500.0
+69,BK505755,2026-07-09 12:36:02,Confirmed,6E101,IndiGo,Anusha,anusha@gmail.com,4,16800.0,67200.0
+70,BK598844,2026-07-09 14:21:27,Confirmed,G8303,GoAir,Anusha,anusha@gmail.com,1,4800.0,4800.0
+71,BK166111,2026-07-10 07:03:54,Confirmed,AI101,Air India,Anusha,anusha@gmail.com,1,12000.0,12000.0
+72,BK796041,2026-07-10 07:14:02,Confirmed,SG101,SpiceJet,Anusha,anusha@gmail.com,2,7000.0,14000.0
+73,BK647841,2026-07-10 07:14:02,Confirmed,SG101,SpiceJet,Anusha,anusha@gmail.com,2,7000.0,14000.0
+74,BK883750,2026-07-10 07:23:43,Confirmed,AI202,Air India,Anusha,anusha@gmail.com,2,24000.0,48000.0
+75,BK429942,2026-07-10 07:34:49,Confirmed,AI202,Air India,Anusha,anusha@gmail.com,2,24000.0,48000.0
+76,BK954568,2026-07-10 08:06:48,Cancelled,6E404,IndiGo,Anusha,anusha@gmail.com,2,10400.0,20800.0
+77,BK287051,2026-07-10 08:13:16,Confirmed,SG101,SpiceJet,Anusha,anusha@gmail.com,2,7000.0,14000.0
+78,BK946383,2026-07-10 18:38:51,Confirmed,6E101,IndiGo,Anusha,anusha@gmail.com,1,4200.0,4200.0
+79,BK349033,2026-07-10 18:48:28,Confirmed,6E101,IndiGo,Anusha,anusha@gmail.com,1,4200.0,4200.0
+80,BK974000,2026-07-10 18:53:36,Confirmed,I5202,AirAsia India,Anusha,anusha@gmail.com,1,3200.0,3200.0
+81,BK193179,2026-07-10 23:14:06,Confirmed,AI101,Air India,Anusha,anusha@gmail.com,1,12000.0,5040.0
+82,BK930691,2026-07-10 23:45:40,Confirmed,AI101,Air India,Anusha,anusha@gmail.com,1,12000.0,12000.0
+83,BK180018,2026-07-11 00:03:23,Confirmed,AI101,Air India,Anusha,anusha@gmail.com,1,12000.0,12000.0
+91,BK273345,2026-07-11 00:47:29,Confirmed,6E101,IndiGo,Anusha,anusha@gmail.com,1,4200.0,4200.0

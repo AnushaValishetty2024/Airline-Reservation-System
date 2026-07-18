@@ -1,0 +1,7 @@
+airline_id,airline_name,airline_code,total_bookings,total_revenue,avg_ticket_price,first_booking_date,last_booking_date
+1,Air India,AI,67,1489840.0,22236.41791,2026-07-06 01:55:52,2026-07-11 00:03:23
+2,IndiGo,6E,6,44000.0,7333.333333,2026-07-07 23:24:22,2026-07-11 00:47:29
+3,Vistara,UK,0,0.0,0.0,,
+4,SpiceJet,SG,4,24500.0,6125.0,2026-07-08 23:25:14,2026-07-10 08:13:16
+5,GoAir,G8,1,4800.0,4800.0,2026-07-09 14:21:27,2026-07-09 14:21:27
+6,AirAsia India,I5,2,6200.0,3100.0,2026-07-08 23:23:29,2026-07-10 18:53:36

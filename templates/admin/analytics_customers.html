@@ -1,0 +1,181 @@
+{% extends "base_new.html" %}
+
+{% block title %}Customer Analytics{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Customer Analytics</h1>
+        <span class="text-muted">Customer behavior and insights</span>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-primary border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Total Customers</p>
+                    <h3 class="mb-0">{{ total_customers }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-success border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">New Customers</p>
+                    <h3 class="mb-0">{{ new_vs_returning.new_customers }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-info border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Returning Customers</p>
+                    <h3 class="mb-0">{{ new_vs_returning.returning_customers }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-warning border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Avg. Spend per Customer</p>
+                    <h3 class="mb-0">Rs {{ "%.2f"|format(avg_spend.avg_customer_spend) }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Growth Chart -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Customer Growth (Last 12 Months)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="customerGrowthChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">New vs Returning Customers</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="newVsReturningChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Booking Frequency Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="frequencyChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Customers Table -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Top Customers by Spending</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Email</th>
+                                    <th>Total Bookings</th>
+                                    <th>Total Spent</th>
+                                    <th>Avg. Booking</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if top_customers %}
+                                {% for customer in top_customers[:10] %}
+                                <tr>
+                                    <td>{{ customer.full_name }}</td>
+                                    <td>{{ customer.email }}</td>
+                                    <td>{{ customer.total_bookings }}</td>
+                                    <td>Rs {{ "%.2f"|format(customer.total_spent) }}</td>
+                                    <td>Rs {{ "%.2f"|format(customer.avg_booking_value) }}</td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted">No customer data available</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Lifetime Value -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Customer Lifetime Value</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Segment</th>
+                                    <th>Customers</th>
+                                    <th>Avg. Lifetime Value</th>
+                                    <th>Total Segment Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if customer_lifetime %}
+                                {% for segment in customer_lifetime %}
+                                <tr>
+                                    <td>{{ segment.customer_segment }}</td>
+                                    <td>{{ segment.customer_count }}</td>
+                                    <td>Rs {{ "%.2f"|format(segment.avg_lifetime_value) }}</td>
+                                    <td>Rs {{ "%.2f"|format(segment.total_segment_value) }}</td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">No customer lifetime data available
+                                    </td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    window.customerAnalyticsData = JSON.parse('{{ customer_growth_data | tojson | safe }}');
+    window.bookingFrequency = JSON.parse('{{ booking_frequency | tojson | safe }}');
+    window.topCustomers = JSON.parse('{{ top_customers | tojson | safe }}');
+    window.customerLifetime = JSON.parse('{{ customer_lifetime | tojson | safe }}');
+</script>
+<script src="{{ url_for('static', filename='js/analytics_customers.js') }}"></script>
+{% endblock %}

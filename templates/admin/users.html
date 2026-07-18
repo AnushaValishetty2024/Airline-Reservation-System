@@ -1,0 +1,138 @@
+{% extends "base_new.html" %}
+
+{% block title %}Manage Users{% endblock %}
+
+{% block content %}
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" action="{{ url_for('admin_new.users') }}" class="row g-3">
+            <div class="col-md-4">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" class="form-control" id="search" name="search" value="{{ search }}"
+                    placeholder="Name or Email">
+            </div>
+            <div class="col-md-3">
+                <label for="role" class="form-label">Role</label>
+                <select class="form-select" id="role" name="role">
+                    <option value="">All</option>
+                    <option value="Admin" {% if role_filter=='Admin' %}selected{% endif %}>Admin</option>
+                    <option value="User" {% if role_filter=='User' %}selected{% endif %}>User</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="sort_by" class="form-label">Sort By</label>
+                <select class="form-select" id="sort_by" name="sort_by">
+                    <option value="created_at" {% if sort_by=='created_at' %}selected{% endif %}>Joined</option>
+                    <option value="full_name" {% if sort_by=='full_name' %}selected{% endif %}>Name</option>
+                    <option value="total_spent" {% if sort_by=='total_spent' %}selected{% endif %}>Spending</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="sort_order" class="form-label">Order</label>
+                <select class="form-select" id="sort_order" name="sort_order">
+                    <option value="DESC" {% if sort_order=='DESC' %}selected{% endif %}>Descending</option>
+                    <option value="ASC" {% if sort_order=='ASC' %}selected{% endif %}>Ascending</option>
+                </select>
+            </div>
+            <div class="col-md-1 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fa-solid fa-filter"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Users Table -->
+<div class="card">
+    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Users ({{ total }})</h5>
+    </div>
+    <div class="card-body">
+        {% if users %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Bookings</th>
+                        <th>Total Spent</th>
+                        <th>Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td><strong>{{ user.full_name }}</strong></td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.mobile_number }}</td>
+                        <td>
+                            <span class="badge bg-{{ 'danger' if user.role_name == 'Admin' else 'primary' }}">
+                                {{ user.role_name }}
+                            </span>
+                        </td>
+                        <td>
+                            <span class="badge bg-{{ 'success' if user.is_active else 'secondary' }}">
+                                {{ 'Active' if user.is_active else 'Inactive' }}
+                            </span>
+                        </td>
+                        <td>{{ user.total_bookings }}</td>
+                        <td><strong>₹{{ "%.2f"|format(user.total_spent) }}</strong></td>
+                        <td>{{ user.created_at.strftime('%d %b %Y') }}</td>
+                        <td>
+                            <form method="post" action="{{ url_for('admin_new.toggle_user_status', user_id=user.id) }}"
+                                onsubmit="return confirm('Toggle user status?');">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+                                <button class="btn btn-sm btn-{{ 'warning' if user.is_active else 'success' }}"
+                                    type="submit">
+                                    <i class="fa-solid fa-{{ 'ban' if user.is_active else 'check' }}"></i>
+                                    {{ 'Deactivate' if user.is_active else 'Activate' }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        {% if total_pages > 1 %}
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if page > 1 %}
+                <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.users', page=page-1, search=search, role=role_filter, sort_by=sort_by, sort_order=sort_order) }}">Previous</a>
+                </li>
+                {% endif %}
+
+                {% for p in range(max(1, page-2), min(total_pages+1, page+3)) %}
+                <li class="page-item {% if p == page %}active{% endif %}">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.users', page=p, search=search, role=role_filter, sort_by=sort_by, sort_order=sort_order) }}">{{
+                        p }}</a>
+                </li>
+                {% endfor %}
+
+                {% if page < total_pages %} <li class="page-item">
+                    <a class="page-link"
+                        href="{{ url_for('admin_new.users', page=page+1, search=search, role=role_filter, sort_by=sort_by, sort_order=sort_order) }}">Next</a>
+                    </li>
+                    {% endif %}
+            </ul>
+        </nav>
+        {% endif %}
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fa-solid fa-info-circle me-2"></i>No users found.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

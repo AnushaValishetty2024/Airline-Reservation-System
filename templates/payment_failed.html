@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="alert alert-danger">
+                <h2 class="alert-heading">Payment Failed</h2>
+                <p>We were unable to process your payment. Please try again or use a different payment method.</p>
+            </div>
+
+            {% if booking %}
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4>Booking Details</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Booking Reference</th>
+                            <td><strong>{{ booking.booking_reference }}</strong></td>
+                        </tr>
+                        <tr>
+                            <th>Flight</th>
+                            <td>{{ booking.flight_number }} - {{ booking.airline_name }}</td>
+                        </tr>
+                        <tr>
+                            <th>Route</th>
+                            <td>{{ booking.origin_city }} ({{ booking.origin_code }}) → {{ booking.destination_city }}
+                                ({{ booking.destination_code }})</td>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Departure</th>
+                            <td>{{ booking.departure_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Arrival</th>
+                            <td>{{ booking.arrival_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <a href="{{ url_for('payment.payment_page', booking_id=booking.id) }}" class="btn btn-primary btn-lg">
+                    Try Again
+                </a>
+                <a href="{{ url_for('user.booking_history') }}" class="btn btn-secondary btn-lg ml-2">
+                    Go to Booking History
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

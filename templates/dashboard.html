@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <h4 class="mb-3"><i class="fa-solid fa-tachometer-alt me-2"></i>{{ page_title }}</h4>
+            {% if current_user %}
+            <p class="text-muted">Welcome back, {{ current_user.full_name }}.</p>
+            {% endif %}
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><a href="{{ url_for('user.search') }}" class="text-decoration-none"><i
+                            class="fa-solid fa-search me-2"></i>Search Flights</a>
+                </li>
+                <li class="list-group-item"><a href="{{ url_for('user.booking_history') }}"
+                        class="text-decoration-none"><i class="fa-solid fa-history me-2"></i>Booking History</a>
+                </li>
+                <li class="list-group-item"><a href="{{ url_for('user.upcoming_trips') }}"
+                        class="text-decoration-none"><i class="fa-solid fa-calendar-check me-2"></i>Upcoming Trips</a>
+                </li>
+                <li class="list-group-item"><a href="{{ url_for('user.travel_analytics') }}"
+                        class="text-decoration-none"><i class="fa-solid fa-chart-line me-2"></i>Travel Analytics</a>
+                </li>
+                {% if g.current_user and g.current_user['role_name'] == 'Admin' %}
+                <li class="list-group-item"><a href="{{ url_for('admin_new.dashboard') }}"
+                        class="text-decoration-none"><i class="fa-solid fa-user-shield me-2"></i>Admin
+                        Controls</a></li>
+                <li class="list-group-item"><a href="{{ url_for('admin_new.payments') }}"
+                        class="text-decoration-none"><i class="fa-solid fa-dollar-sign me-2"></i>Payment Dashboard</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4 p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Quick Actions</h5>
+            </div>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <a href="{{ url_for('user.search') }}"
+                        class="btn btn-primary btn-lg w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                        <i class="fa-solid fa-search mb-2"></i>
+                        <span>Search Flights</span>
+                    </a>
+                </div>
+                <div class="col-md-6">
+                    <a href="{{ url_for('user.booking_history') }}"
+                        class="btn btn-success btn-lg w-100 h-100 d-flex flex-column align-items-center justify-content-center py-3">
+                        <i class="fa-solid fa-history mb-2"></i>
+                        <span>My Bookings</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        {% if kpis %}
+        <!-- User KPI Cards -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Total Bookings</p>
+                                <h3 class="mb-0">{{ kpis.total_bookings }}</h3>
+                            </div>
+                            <div class="icon-box bg-primary bg-opacity-10 text-primary">
+                                <i class="fa-solid fa-ticket"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Upcoming Trips</p>
+                                <h3 class="mb-0">{{ kpis.upcoming_trips }}</h3>
+                            </div>
+                            <div class="icon-box bg-success bg-opacity-10 text-success">
+                                <i class="fa-solid fa-calendar-check"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Completed Trips</p>
+                                <h3 class="mb-0">{{ kpis.completed_trips }}</h3>
+                            </div>
+                            <div class="icon-box bg-info bg-opacity-10 text-info">
+                                <i class="fa-solid fa-check-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Cancelled Trips</p>
+                                <h3 class="mb-0">{{ kpis.cancelled_trips }}</h3>
+                            </div>
+                            <div class="icon-box bg-danger bg-opacity-10 text-danger">
+                                <i class="fa-solid fa-times-circle"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Total Amount Spent</p>
+                                <h3 class="mb-0">₹{{ "%.2f"|format(kpis.total_amount_spent) }}</h3>
+                            </div>
+                            <div class="icon-box bg-warning bg-opacity-10 text-warning">
+                                <i class="fa-solid fa-rupee-sign"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Average Ticket Price</p>
+                                <h3 class="mb-0">₹{{ "%.2f"|format(kpis.avg_ticket_price) }}</h3>
+                            </div>
+                            <div class="icon-box bg-success bg-opacity-10 text-success">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-6">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Favourite Airline</p>
+                                <h5 class="mb-0">{{ kpis.favourite_airline }}</h5>
+                            </div>
+                            <div class="icon-box bg-primary bg-opacity-10 text-primary">
+                                <i class="fa-solid fa-plane"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card kpi-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <p class="text-muted mb-1">Favourite Destination</p>
+                                <h5 class="mb-0">{{ kpis.favourite_destination }}</h5>
+                            </div>
+                            <div class="icon-box bg-info bg-opacity-10 text-info">
+                                <i class="fa-solid fa-location-dot"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if show_payment_dashboard %}
+        <!-- Admin Payment Dashboard -->
+        <div class="card shadow-sm border-0 rounded-4 p-4 mb-4">
+            <h5 class="mb-3"><i class="fa-solid fa-chart-line me-2"></i>Payment Analytics</h5>
+            {% if payment_report and payment_report.success %}
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="card border-0 bg-primary text-white">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Total Payments</h6>
+                            <h3 class="mb-0">{{ payment_report.summary.total_transactions }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 bg-success text-white">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Successful</h6>
+                            <h3 class="mb-0">
+                                {% set successful = payment_report.status_distribution | selectattr('status_name',
+                                'equalto', 'Completed') | first %}
+                                {{ successful.count if successful else 0 }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 bg-danger text-white">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Failed</h6>
+                            <h3 class="mb-0">
+                                {% set failed = payment_report.status_distribution | selectattr('status_name',
+                                'equalto', 'Failed') | first %}
+                                {{ failed.count if failed else 0 }}
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card border-0 bg-info text-white">
+                        <div class="card-body text-center">
+                            <h6 class="card-title">Total Revenue</h6>
+                            <h3 class="mb-0">₹{{ "%.2f"|format(payment_report.summary.total_revenue) }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-muted">No payment data available.</p>
+            {% endif %}
+        </div>
+
+        {% if recent_transactions %}
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Recent Transactions</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Payment Reference</th>
+                            <th>Booking Reference</th>
+                            <th>Passenger</th>
+                            <th>Amount</th>
+                            <th>Method</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for txn in recent_transactions %}
+                        <tr>
+                            <td><span class="fw-bold">{{ txn.payment_reference }}</span></td>
+                            <td>{{ txn.booking_reference }}</td>
+                            <td>{{ txn.passenger_name or 'N/A' }}</td>
+                            <td class="fw-bold">₹{{ "%.2f"|format(txn.amount) }}</td>
+                            <td>{{ txn.payment_method }}</td>
+                            <td>
+                                {% if txn.payment_status == 'Completed' %}
+                                <span class="badge bg-success">{{ txn.payment_status }}</span>
+                                {% elif txn.payment_status == 'Failed' %}
+                                <span class="badge bg-danger">{{ txn.payment_status }}</span>
+                                {% elif txn.payment_status == 'Pending' %}
+                                <span class="badge bg-warning text-dark">{{ txn.payment_status }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">{{ txn.payment_status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ txn.payment_date.strftime('%d %b %Y %I:%M %p') if txn.payment_date else '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <h5 class="mb-3">Recent Transactions</h5>
+            <p class="text-muted mb-0">No transactions found.</p>
+        </div>
+        {% endif %}
+
+        {% if recent_bookings %}
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">Latest Bookings</h5>
+                <a href="{{ url_for('user.booking_history') }}" class="btn btn-sm btn-outline-primary">View
+                    All</a>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Reference</th>
+                            <th>Flight</th>
+                            <th>Route</th>
+                            <th>Passengers</th>
+                            <th>Status</th>
+                            <th>Booked On</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in recent_bookings %}
+                        <tr>
+                            <td><span class="fw-bold">{{ booking.booking_reference }}</span></td>
+                            <td>{{ booking.flight_number }}</td>
+                            <td>{{ booking.origin_code }} → {{ booking.destination_code }}</td>
+                            <td>
+                                {% set pax_count = booking_passenger_counts[booking.id] | default(0) %}
+                                <i class="fa-solid fa-user me-1"></i>{{ pax_count }}
+                            </td>
+                            <td>
+                                {% if booking.booking_status == 'Confirmed' %}
+                                <span class="badge bg-success">{{ booking.booking_status }}</span>
+                                {% elif booking.booking_status == 'Pending' %}
+                                <span class="badge bg-warning text-dark">{{ booking.booking_status }}</span>
+                                {% elif booking.booking_status == 'Cancelled' %}
+                                <span class="badge bg-danger">{{ booking.booking_status }}</span>
+                                {% else %}
+                                <span class="badge bg-secondary">{{ booking.booking_status }}</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ booking.booked_at.strftime('%d %b %Y') if booking.booked_at else '-' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow-sm border-0 rounded-4 p-4">
+            <h5 class="mb-3">Latest Bookings</h5>
+            <p class="text-muted mb-0">No bookings yet. Start by searching for a flight!</p>
+            <a href="{{ url_for('user.search') }}" class="btn btn-primary mt-3">Search Flights</a>
+        </div>
+        {% endif %}
+        {% endif %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

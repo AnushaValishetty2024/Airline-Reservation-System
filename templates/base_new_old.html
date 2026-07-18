@@ -1,0 +1,68 @@
+<ul class="nav flex-column sidebar-nav">
+
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'admin_new.dashboard' %}active{% endif %}"
+            href="{{ url_for('admin_new.dashboard') }}">
+            <i class="fa-solid fa-gauge-high me-2"></i>
+            Dashboard
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'admin_new.flights' %}active{% endif %}"
+            href="{{ url_for('admin_new.flights') }}">
+            <i class="fa-solid fa-plane-departure me-2"></i>
+            Flights
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'admin_new.bookings' %}active{% endif %}"
+            href="{{ url_for('admin_new.bookings') }}">
+            <i class="fa-solid fa-ticket me-2"></i>
+            Bookings
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'admin_new.users' %}active{% endif %}"
+            href="{{ url_for('admin_new.users') }}">
+            <i class="fa-solid fa-users me-2"></i>
+            Users
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'admin_new.payments' %}active{% endif %}"
+            href="{{ url_for('admin_new.payments') }}">
+            <i class="fa-solid fa-credit-card me-2"></i>
+            Payments
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'admin_new.revenue' %}active{% endif %}"
+            href="{{ url_for('admin_new.revenue') }}">
+            <i class="fa-solid fa-chart-line me-2"></i>
+            Revenue
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link {% if request.endpoint == 'analytics.dashboard' %}active{% endif %}"
+            href="{{ url_for('analytics.dashboard') }}">
+            <i class="fa-solid fa-chart-pie me-2"></i>
+            Business Analytics
+        </a>
+    </li>
+
+    <hr class="text-secondary my-3">
+
+    <li class="nav-item">
+        <a class="nav-link" href="{{ url_for('user.dashboard') }}">
+            <i class="fa-solid fa-user me-2"></i>
+            User Dashboard
+        </a>
+    </li>
+
+</ul>

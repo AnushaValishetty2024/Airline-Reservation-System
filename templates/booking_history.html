@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} | Airline Reservation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('user.dashboard') }}">
+                <i class="fa-solid fa-plane me-2"></i>Skyline Airlines
+            </a>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.search') }}">Search</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('user.profile') }}">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
+                <li class="breadcrumb-item active">Booking History</li>
+            </ol>
+        </nav>
+
+        <div class="card shadow-sm">
+            <div class="card-header">
+                <h4 class="mb-0">My Bookings</h4>
+            </div>
+            <div class="card-body">
+                {% if bookings %}
+                <div class="row g-4">
+                    {% for booking in bookings %}
+                    <div class="col-lg-6 col-xl-6">
+                        <div class="card h-100 shadow-sm hover-shadow transition-all">
+                            <div class="card-header d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="mb-0 fw-bold">{{ booking.booking_reference }}</h5>
+                                    <small class="text-white-75">{{ booking.airline_name }}</small>
+                                </div>
+                                <span class="badge fs-6
+                                    {% if booking.booking_status == 'Confirmed' %}bg-success
+                                    {% elif booking.booking_status == 'Pending' %}bg-warning text-dark
+                                    {% elif booking.booking_status == 'Cancelled' %}bg-danger
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ booking.booking_status }}
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div class="text-center">
+                                        <div class="fw-bold fs-5">{{ booking.origin_code }}</div>
+                                        <small class="text-muted">{{ booking.origin_city }}</small>
+                                    </div>
+                                    <div class="flex-grow-1 mx-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="border-top flex-grow-1"></div>
+                                            <i class="fa-solid fa-plane mx-2 text-primary"></i>
+                                            <div class="border-top flex-grow-1"></div>
+                                        </div>
+                                        <div class="text-center mt-1 small text-muted">
+                                            {{ booking.departure_datetime.strftime('%I:%M %p') }}
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="fw-bold fs-5">{{ booking.destination_code }}</div>
+                                        <small class="text-muted">{{ booking.destination_city }}</small>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <small class="text-muted">Flight</small>
+                                        <div class="fw-bold">{{ booking.flight_number }}</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Aircraft</small>
+                                        <div class="fw-bold">{{ booking.aircraft_model }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="row g-2 mb-3">
+                                    <div class="col-6">
+                                        <small class="text-muted">Departure</small>
+                                        <div class="fw-bold">{{ booking.departure_datetime.strftime('%d %b %Y') }}</div>
+                                        <div class="text-primary">{{ booking.departure_datetime.strftime('%I:%M %p') }}
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Arrival</small>
+                                        <div class="fw-bold">{{ booking.arrival_datetime.strftime('%d %b %Y') }}</div>
+                                        <div class="text-primary">{{ booking.arrival_datetime.strftime('%I:%M %p') }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <small class="text-muted">Total Amount:</small>
+                                        <div class="fw-bold text-success fs-5">₹{{ "%.2f"|format(booking.total_amount)
+                                            }}</div>
+                                        {% if booking.amount_paid %}
+                                        <small class="text-muted">Paid: ₹{{ "%.2f"|format(booking.amount_paid)
+                                            }}</small><br>
+                                        {% endif %}
+                                        {% if booking.payment_status %}
+                                        <span class="badge 
+                                            {% if booking.payment_status == 'Completed' %}bg-success
+                                            {% elif booking.payment_status == 'Failed' %}bg-danger
+                                            {% elif booking.payment_status == 'Pending' %}bg-warning text-dark
+                                            {% else %}bg-secondary{% endif %}">
+                                            {{ booking.payment_status }}
+                                        </span>
+                                        {% endif %}
+                                    </div>
+                                    {% if booking.booking_status != 'Cancelled' %}
+                                    <form method="post"
+                                        action="{{ url_for('user.cancel_booking_route', booking_id=booking.id) }}"
+                                        onsubmit="return confirm('Cancel this booking?');">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}" />
+                                        <button class="btn btn-outline-danger btn-sm" type="submit">
+                                            <i class="fa-solid fa-times-circle me-1"></i>Cancel Booking</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+
+                                {% if booking_passengers[booking.id] %}
+                                <hr class="my-3">
+                                <h6 class="mb-2">Passengers ({{ booking_passengers[booking.id]|length }})</h6>
+                                <div class="row g-2">
+                                    {% for passenger in booking_passengers[booking.id] %}
+                                    <div class="col-md-6">
+                                        <div class="card border-0 bg-light">
+                                            <div class="card-body py-2 px-3">
+                                                <div class="fw-bold">{{ passenger.full_name }}</div>
+                                                <small class="text-muted">
+                                                    {% if passenger.gender %}{{ passenger.gender }}{% endif %}
+                                                    {% if passenger.date_of_birth %} | DOB: {{ passenger.date_of_birth
+                                                    }}{% endif %}
+                                                </small>
+                                                {% if passenger.seat_number %}
+                                                <div class="mt-1">
+                                                    <span class="badge bg-primary">Seat {{ passenger.seat_number
+                                                        }}</span>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
+                                <!-- Ticket and Invoice Info -->
+                                {% if booking.ticket_number or booking.invoice_number %}
+                                <hr class="my-3">
+                                <div class="row g-2">
+                                    {% if booking.ticket_number %}
+                                    <div class="col-sm-6">
+                                        <small class="text-muted">Ticket Number</small>
+                                        <div class="fw-bold text-primary">{{ booking.ticket_number }}</div>
+                                    </div>
+                                    {% endif %}
+                                    {% if booking.invoice_number %}
+                                    <div class="col-sm-6">
+                                        <small class="text-muted">Invoice Number</small>
+                                        <div class="fw-bold text-success">{{ booking.invoice_number }}</div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+
+                                <!-- Download Buttons -->
+                                {% if booking.ticket_number %}
+                                <div class="d-grid gap-2 mt-3">
+                                    <a href="{{ url_for('payment.download_ticket', booking_id=booking.id) }}"
+                                        class="btn btn-primary btn-sm">
+                                        <i class="fa-solid fa-download me-1"></i>Download Boarding Pass
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="d-grid gap-2 mt-3">
+                                    <a href="{{ url_for('payment.download_ticket', booking_id=booking.id) }}"
+                                        class="btn btn-outline-primary btn-sm"
+                                        onclick="alert('Generating boarding pass...'); this.innerHTML='<i class=\'fa-solid fa-spinner fa-spin me-1\'></i>Generating...';">
+                                        <i class="fa-solid fa-file-pdf me-1"></i>Generate Boarding Pass
+                                    </a>
+                                </div>
+                                {% endif %}
+                                {% if booking.invoice_number %}
+                                <div class="d-grid gap-2 mt-2">
+                                    <a href="{{ url_for('payment.download_invoice', booking_id=booking.id) }}"
+                                        class="btn btn-success btn-sm">
+                                        <i class="fa-solid fa-download me-1"></i>Download Invoice
+                                    </a>
+                                </div>
+                                {% else %}
+                                <div class="d-grid gap-2 mt-2">
+                                    <a href="{{ url_for('payment.download_invoice', booking_id=booking.id) }}"
+                                        class="btn btn-outline-success btn-sm"
+                                        onclick="alert('Generating invoice...'); this.innerHTML='<i class=\'fa-solid fa-spinner fa-spin me-1\'></i>Generating...';">
+                                        <i class="fa-solid fa-file-pdf me-1"></i>Generate Invoice
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="text-center py-5">
+                    <i class="fa-solid fa-ticket-alt fs-1 text-muted mb-3"></i>
+                    <h5 class="text-muted">No bookings yet.</h5>
+                    <p class="text-muted">Start by searching for flights.</p>
+                    <a href="{{ url_for('user.search') }}" class="btn btn-primary">Search Flights</a>
+                </div>
+                {% endif %}
+
+                <!-- Pagination -->
+                {% if total_pages > 1 %}
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="{{ url_for('user.booking_history', page=page-1, search=search, status=status_filter, date_from=date_from, date_to=date_to, sort_by=sort_by, sort_order=sort_order) }}">Previous</a>
+                        </li>
+                        {% endif %}
+
+                        {% for p in range(start_page, end_page + 1) %}
+                        <li class="page-item {% if p == page %}active{% endif %}">
+                            <a class="page-link"
+                                href="{{ url_for('user.booking_history', page=p, search=search, status=status_filter, date_from=date_from, date_to=date_to, sort_by=sort_by, sort_order=sort_order) }}">{{
+                                p }}</a>
+                        </li>
+                        {% endfor %}
+
+                        {% if page < total_pages %} <li class="page-item">
+                            <a class="page-link"
+                                href="{{ url_for('user.booking_history', page=page+1, search=search, status=status_filter, date_from=date_from, date_to=date_to, sort_by=sort_by, sort_order=sort_order) }}">Next</a>
+                            </li>
+                            {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Payment</h2>
+                </div>
+                <div class="card-body">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+
+                    {% if booking %}
+                    <!-- Booking Summary -->
+                    <div class="mb-4">
+                        <h4>Booking Summary</h4>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Booking Reference</th>
+                                <td>{{ booking.booking_reference }}</td>
+                            </tr>
+                            <tr>
+                                <th>Flight</th>
+                                <td>{{ booking.flight_number }} - {{ booking.airline_name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Route</th>
+                                <td>{{ booking.origin_city }} ({{ booking.origin_code }}) → {{ booking.destination_city
+                                    }} ({{ booking.destination_code }})</td>
+                            </tr>
+                            <tr>
+                                <th>Departure</th>
+                                <td>{{ booking.departure_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Arrival</th>
+                                <td>{{ booking.arrival_datetime.strftime('%Y-%m-%d %H:%M') }}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <!-- Fare Breakdown -->
+                    {% if pricing %}
+                    <div class="mb-4">
+                        <h4>Fare Breakdown</h4>
+                        <table class="table table-bordered">
+                            <tr>
+                                <th>Base Fare</th>
+                                <td class="text-right">${{ "%.2f"|format(pricing.base_fare) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Taxes</th>
+                                <td class="text-right">${{ "%.2f"|format(pricing.taxes) }}</td>
+                            </tr>
+                            <tr>
+                                <th>GST</th>
+                                <td class="text-right">${{ "%.2f"|format(pricing.gst) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Convenience Fee</th>
+                                <td class="text-right">${{ "%.2f"|format(pricing.convenience_fee) }}</td>
+                            </tr>
+                            <tr class="table-active">
+                                <th>Grand Total</th>
+                                <td class="text-right font-weight-bold">${{ "%.2f"|format(pricing.grand_total) }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    {% endif %}
+
+                    <!-- Payment Form -->
+                    <form method="POST" action="{{ url_for('payment.payment_page', booking_id=booking.id) }}">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+                        <div class="form-group">
+                            <label for="payment_method">Payment Method <span class="text-danger">*</span></label>
+                            <select class="form-control" id="payment_method" name="payment_method" required>
+                                <option value="">Select Payment Method</option>
+                                {% for method in payment_methods %}
+                                <option value="{{ method.name }}">{{ method.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> This is a simulated payment. No real transaction will be made.
+                            Payment success rate is approximately 90%.
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-lg btn-block">
+                            Pay ${{ "%.2f"|format(pricing.grand_total if pricing else booking.total_amount) }}
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

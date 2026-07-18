@@ -1,0 +1,303 @@
+{% extends "base_new.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4">Business Analytics Dashboard</h2>
+
+
+    <!-- KPI Cards -->
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6>Total Revenue</h6>
+                    <h3>₹{{ analytics.total_revenue }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6>Total Bookings</h6>
+                    <h3>{{ analytics.total_bookings }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6>Total Flights</h6>
+                    <h3>{{ analytics.total_flights }}</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6>Total Customers</h6>
+                    <h3>{{ analytics.total_customers }}</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6>Occupancy Rate</h6>
+                    <h3>{{ analytics.occupancy_rate }}%</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-3">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h6>Cancellation Rate</h6>
+                    <h3>{{ analytics.cancellation_rate }}%</h3>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Charts -->
+    <div class="row mt-4">
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    Revenue Chart
+                </div>
+                <div class="card-body">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    Booking Trend
+                </div>
+                <div class="card-body">
+                    <canvas id="bookingChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row mt-4">
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    Revenue by Airline
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="airlineRevenueChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    Bookings by Airline
+                </div>
+                <div class="card-body">
+                    <div class="chart-container">
+                        <canvas id="bookingAirlineChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        const revenueData = {{ monthly_revenue | tojson }};
+
+        const labels = revenueData.map(item => item.month);
+        const values = revenueData.map(item => item.revenue);
+
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Monthly Revenue',
+                    data: values,
+                    backgroundColor: '#1f4e79',
+                    borderColor: '#163a5f',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#222'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#222'
+                        },
+                        grid: {
+                            color: '#d0d0d0'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#222'
+                        },
+                        grid: {
+                            color: '#d0d0d0'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        const bookingData = {{ booking_trend | tojson }};
+
+        const bookingLabels = bookingData.map(item => item.month);
+        const bookingValues = bookingData.map(item => item.bookings);
+
+        const bookingCtx = document.getElementById('bookingChart').getContext('2d');
+
+        new Chart(bookingCtx, {
+            type: 'line',
+            data: {
+                labels: bookingLabels,
+                datasets: [{
+                    label: 'Monthly Bookings',
+                    data: bookingValues,
+                    borderColor: '#8B0000',
+                    backgroundColor: '#8B0000',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#8B0000',
+                    pointRadius: 5,
+                    tension: 0.3,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#222'
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#222'
+                        },
+                        grid: {
+                            color: '#d0d0d0'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#222'
+                        },
+                        grid: {
+                            color: '#d0d0d0'
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+    <script>
+        const airlineData = {{ revenue_by_airline | tojson }};
+
+        const airlineLabels = airlineData.map(item => item.airline_name);
+        const airlineRevenue = airlineData.map(item => item.revenue);
+
+        const airlineCtx = document.getElementById('airlineRevenueChart').getContext('2d');
+
+        new Chart(
+            document.getElementById('airlineRevenueChart'),
+            {
+                type: 'bar',
+                data: {
+                    labels: airlineLabels,
+                    datasets: [{
+                        label: 'Revenue',
+                        data: airlineRevenue
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            }
+        );
+    </script>
+
+    <script>
+        const bookingAirlineData = {{ bookings_by_airline | tojson }};
+
+        const airlineNames = bookingAirlineData.map(item => item.airline_name);
+        const bookingCounts = bookingAirlineData.map(item => item.bookings);
+
+        const bookingAirlineCtx = document.getElementById('bookingAirlineChart').getContext('2d');
+
+        new Chart(bookingAirlineCtx, {
+            type: 'pie',
+            data: {
+                labels: airlineNames,
+                datasets: [{
+                    data: bookingCounts
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <a href="{{ url_for('admin_new.business_analytics') }}" class="text-decoration-none">
+                <div class="card shadow">
+                    <div class="card-body text-center">
+                        <i class="fa-solid fa-chart-line fa-3x text-primary mb-3"></i>
+                        <h5>Business Analytics</h5>
+                        <p class="text-muted">Open Analytics Dashboard</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

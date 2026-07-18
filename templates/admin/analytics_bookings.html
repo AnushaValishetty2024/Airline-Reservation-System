@@ -1,0 +1,202 @@
+{% extends "base_new.html" %}
+
+{% block title %}Booking Analytics{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Booking Analytics</h1>
+        <span class="text-muted">Booking trends and patterns</span>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-primary border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Total Bookings</p>
+                    <h3 class="mb-0">{{ booking_trends | sum(attribute='bookings') }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-success border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Confirmed Bookings</p>
+                    <h3 class="mb-0">{{ booking_trends | sum(attribute='confirmed_bookings') }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-danger border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Cancelled Bookings</p>
+                    <h3 class="mb-0">{{ booking_trends | sum(attribute='cancelled_bookings') }}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="card border-start border-info border-4 h-100">
+                <div class="card-body">
+                    <p class="text-muted mb-1">Booking Status Types</p>
+                    <h3 class="mb-0">{{ booking_status | length }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Booking Trends (Last 12 Months)</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="bookingTrendsChart" height="80"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Booking Status Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="bookingStatusChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Peak Booking Hours</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Hour</th>
+                                    <th>Bookings</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for hour in peak_hours[:10] %}
+                                <tr>
+                                    <td>{{ "%02d:00"|format(hour.hour) }}</td>
+                                    <td>{{ hour.booking_count }}</td>
+                                    <td>{{ hour.percentage }}%</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No peak hour data available</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Peak Booking Days of the Week</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Day</th>
+                                    <th>Bookings</th>
+                                    <th>Percentage</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for day in peak_days %}
+                                <tr>
+                                    <td>{{ day.day_name }}</td>
+                                    <td>{{ day.booking_count }}</td>
+                                    <td>{{ day.percentage }}%</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted">No peak day data available</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Bookings Table -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Bookings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm">
+                            <thead>
+                                <tr>
+                                    <th>Booking ID</th>
+                                    <th>Customer</th>
+                                    <th>Flight</th>
+                                    <th>Route</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if recent_bookings %}
+                                {% for booking in recent_bookings[:20] %}
+                                <tr>
+                                    <td>#{{ booking.booking_id }}</td>
+                                    <td>{{ booking.customer_name }}</td>
+                                    <td>{{ booking.flight_number }}</td>
+                                    <td>{{ booking.route }}</td>
+                                    <td>{{ booking.booked_at.strftime('%Y-%m-%d %H:%M') if booking.booked_at else 'N/A'
+                                        }}</td>
+                                    <td>
+                                        <span
+                                            class="badge bg-{{ 'success' if booking.status_name == 'Confirmed' else 'danger' if booking.status_name == 'Cancelled' else 'warning' }}">
+                                            {{ booking.status_name }}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted">No bookings available</td>
+                                </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.bookingAnalyticsData = JSON.parse('{{ analytics_data | safe }}');
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/analytics_bookings.js') }}"></script>
+{% endblock %}
