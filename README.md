@@ -128,28 +128,77 @@ http://127.0.0.1:5000
 
 ---
 
-## 📷 Project Screenshots
+# 📷 Project Screenshots
 
-The project includes screenshots for:
+## Login Page
 
-- Login Page
-- Registration Page
-- User Dashboard
-- Flight Search
-- Flight Booking
-- Payment Page
-- Booking History
-- Admin Dashboard
-- Revenue Analysis
-- Booking Trend Analysis
-- Customer Analytics
-- Occupancy Analysis
-- SQL Reports
-- Data Export Module
-
-*(See the `screenshots/` folder for all screenshots.)*
+![Login](screenshots/login.png)
 
 ---
+
+## User Dashboard
+
+![User Dashboard](screenshots/user%20dashboard.png)
+
+---
+
+## Flight Search
+
+![Flight Search](screenshots/user%20dashboard-flight%20search.png)
+
+---
+
+## Flight Booking
+
+![Flight Booking](screenshots/user%20dashboard-book-passenger.png)
+
+---
+
+## Payment
+
+![Payment](screenshots/user%20dashboard-payment.png)
+
+---
+
+## Booking Details
+
+![Booking Details](screenshots/user%20dashboard-booking%20details.png)
+
+---
+
+## My Bookings
+
+![My Bookings](screenshots/user%20dashboard-my%20bookings.png)
+
+---
+
+## Admin Dashboard
+
+![Admin Dashboard](screenshots/admin%20dashboard-booking.png)
+
+---
+
+## Business Analytics
+
+![Business Analytics](screenshots/admin%20dashboard-business%20analytics.png)
+
+---
+
+## Revenue & Booking Trends
+
+![Booking Trends](screenshots/admin%20dashboard-booking%20trend%20analysis.png)
+
+---
+
+## Customer Analytics
+
+![Customer Analytics](screenshots/admin%20dashboard-customer%20analysis.png)
+
+---
+
+## SQL Reports
+
+![SQL Reports](screenshots/admin%20dashboard-sql%20reports.png)
 
 ## 📈 Key Highlights
 
